@@ -1,0 +1,17 @@
+{
+  "name": "sliding-window-rate-limiter",
+  "version": "0.1.0",
+  "description": "Tracks event timestamps in a rolling time window and reports whether a new event exceeds a configured rate limit.",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": "./src/index.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "dependencies": {}
+}
