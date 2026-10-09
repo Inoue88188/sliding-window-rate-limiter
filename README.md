@@ -30,3 +30,10 @@ The one deliberate coupling: `check()` both decides **and** records. This is int
 The window is **inclusive** on the left edge: `[now - windowMs, now]`. An event that happened exactly `windowMs` ago is still counted as in-window. This matters at the boundary: if your window is 1000 ms and you admit one event at t=0, then at t=1000 the limiter is still full. At t=1001 the old event finally expires. If your downstream code assumes a half-open window, this is the spot where you will be surprised.
 
 The clock must advance monotonically in normal use. The limiter stores timestamps in ascending order and evicts from the front. If the clock ever goes backwards (NTP step, manual override), eviction still terminates and does not throw, but the limiter may retain stale timestamps longer than expected until the clock catches back up. There is no internal compensation for clock skew between processes.
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
